@@ -27,6 +27,10 @@
 *.lib
 
 # Executables
+example
 *.exe
 *.out
 *.app
+
+# Compiled static analysis files
+*.su
