@@ -1,16 +1,17 @@
-#ifndef STACK_VECTOR_HPP
-#define STACK_VECTOR_HPP
+#pragma once
 
-template <typename T>
+#include <cstddef>
+
+template <typename T, std::size_t N>
 class stack_vector {
 public:
     stack_vector();
-    // ...other member functions...
+    void push_back(const T& value);
+    void pop_back();
 
 private:
-    // ...member variables...
+    T data_[N];
+    std::size_t idx_;
 };
 
 #include "stack_vector.tpp"
-
-#endif // STACK_VECTOR_HPP
