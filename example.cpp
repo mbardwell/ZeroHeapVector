@@ -1,16 +1,29 @@
 #include "stack_vector.hpp"
-#include <iostream>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+
+#ifdef SIZE
+constexpr std::size_t N = SIZE;
+#else
+constexpr std::size_t N = 128;
+#endif
+
+// Potentially more user friendly to define vector size once based off of processor stack size
+template <typename T>
+using vector = stack_vector<T, N>;
 
 int main() {
-    stack_vector<int, 10> vec;
-    std::cout << "Example program running.\n";
-    for (int i = 0; i < 10; ++i) {
-        vec.push_back(i);
-        std::cout << "Stack vector using " << vec.size() << "/" << vec.capacity() << " capacity\n";
+    vector<std::uint8_t> vec;
+    for (std::size_t i = 0; i < vec.capacity(); ++i) {
+        vec.push_back(static_cast<std::uint8_t>(i));
+        printf("%d ", vec[i]);
     }
-    for (int i = 0; i < 10; ++i) {
+    printf("\nStatic vector used: %zu / %zu capacity", vec.size(), vec.capacity());
+    for (std::size_t i = 0; i < vec.capacity(); ++i) {
         vec.pop_back();
-        std::cout << "Stack vector using " << vec.size() << "/" << vec.capacity() << " capacity\n";
+        printf("%d ", vec[i]);
     }
+    printf("\n");
     return 0;
 }

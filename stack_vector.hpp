@@ -11,6 +11,12 @@ public:
     void pop_back();
     std::size_t size() const { return idx_; }
     static std::size_t capacity() { return N; }
+    T& operator[](std::size_t index) {
+        return data_[index];
+    }
+    const T& operator[](std::size_t index) const {
+        return data_[index];
+    }
 
 private:
     std::array<T, N> data_;
