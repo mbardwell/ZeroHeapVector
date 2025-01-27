@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++23
 
 LIBRARY = libstack_vector.a
-SOURCES = stack_vector.cpp
+SOURCES =
 OBJECTS = $(SOURCES:.cpp=.o)
 
 EXAMPLE = example
