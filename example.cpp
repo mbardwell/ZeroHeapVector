@@ -10,7 +10,8 @@ constexpr std::size_t N = SIZE;
 constexpr std::size_t N = 128;
 #endif
 
-// Potentially more user friendly to define vector size once based off of processor stack size
+// Alias for stack_vector with a fixed size.
+// This will be more familiar to C++ developers.
 template <typename T>
 using vector = stack_vector<T, N>;
 
