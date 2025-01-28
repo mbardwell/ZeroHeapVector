@@ -9,7 +9,11 @@ LIBRARY = libstack_vector.a
 SOURCES =
 OBJECTS = $(SOURCES:.cpp=.o)
 
-EXAMPLE = example
+ifeq ($(OS),Windows_NT)
+	EXAMPLE = example.exe
+else
+	EXAMPLE = example
+endif
 EXAMPLE_SOURCES = example.cpp
 EXAMPLE_OBJECTS = $(EXAMPLE_SOURCES:.cpp=.o)
 
@@ -27,7 +31,7 @@ stats: $(EXAMPLE)
 	@echo "\033[0;32mStats\033[0m"
 	@size $(EXAMPLE)
 	@# Output the stack usage. Requires -fstack-usage to be enabled.
-	@echo -n "Stack usage: " && grep "main" $(EXAMPLE).su
+	@echo -n "Stack usage: " && grep "main" $(EXAMPLE:.exe=.su)
 
 static: $(EXAMPLE)
 	@echo "\033[0;32mStatic Analysis\033[0m"
@@ -37,4 +41,4 @@ static: $(EXAMPLE)
 
 clean:
 	@echo "\033[0;32mCleaning\033[0m"
-	rm -f $(OBJECTS) $(EXAMPLE_OBJECTS) $(LIBRARY) $(EXAMPLE)
+	rm -f $(OBJECTS) $(EXAMPLE_OBJECTS) $(LIBRARY) $(EXAMPLE) $(EXAMPLE:.exe=.su)
