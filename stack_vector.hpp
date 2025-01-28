@@ -17,6 +17,7 @@ public:
     const T& operator[](std::size_t index) const {
         return data_[index];
     }
+    bool empty() const { return idx_ == 0; }
 
 private:
     std::array<T, N> data_;
