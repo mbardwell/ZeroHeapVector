@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 
 #ifdef SIZE
 constexpr std::size_t N = SIZE;
@@ -15,15 +16,10 @@ using vector = stack_vector<T, N>;
 
 int main() {
     vector<std::uint8_t> vec;
-    for (std::size_t i = 0; i < vec.capacity(); ++i) {
-        vec.push_back(static_cast<std::uint8_t>(i));
-        printf("%d ", vec[i]);
-    }
-    printf("\nStatic vector used: %zu / %zu capacity", vec.size(), vec.capacity());
-    for (std::size_t i = 0; i < vec.capacity(); ++i) {
+    while (vec.size() < vec.capacity())
+        vec.push_back(static_cast<std::uint8_t>(rand() % 256));
+    printf("Static vector used: %zu / %zu capacity", vec.size(), vec.capacity());
+    while (!vec.empty())
         vec.pop_back();
-        printf("%d ", vec[i]);
-    }
-    printf("\n");
     return 0;
 }
