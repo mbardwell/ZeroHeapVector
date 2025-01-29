@@ -18,6 +18,33 @@ Terminology: `static_vector` == `stack_vector` == `zero heap vector`
 
 ## Key Results
 
+Results are organized by commit they were derived from. Reverse chronological order.
+
+### 7b20a5b  Complete comm. protocol example
+
+```shell
+$ ./example.exe
+--Initial state
+Heap vector size: 11, capacity: 11
+Stack vector size: 11, capacity: 128
+0xC0 0x0D 0x0E 0x0A 0x0D 0x0B 0x0E 0x0E 0x0F 0x00 0xC0
+--After unframing
+Heap vector size: 9, capacity: 11
+Stack vector size: 9, capacity: 128
+0x0D 0x0E 0x0A 0x0D 0x0B 0x0E 0x0E 0x0F 0x00
+--After removing delimiter
+Heap vector size: 8, capacity: 11
+Stack vector size: 8, capacity: 128
+0x0D 0x0E 0x0A 0x0D 0x0B 0x0E 0x0E 0x0F
+--After reframing
+Heap vector size: 10, capacity: 11
+Stack vector size: 10, capacity: 128
+0xC0 0x0D 0x0E 0x0A 0x0D 0x0B 0x0E 0x0E 0x0F 0xC0
+--After clearing
+Heap vector size: 0, capacity: 11
+Stack vector size: 0, capacity: 128
+```
+
 ### c3b222c  Demonstrate simliarity between static_vector and std::vector APIs
 
 `stack_vector` behaves as expected
