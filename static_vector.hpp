@@ -1,11 +1,15 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 
 template <typename T, std::size_t Capacity>
 class static_vector {
 public:
+    using iterator = typename std::array<T, Capacity>::iterator;
+    using const_iterator = typename std::array<T, Capacity>::const_iterator;
+
     constexpr static_vector();
     constexpr static_vector(std::initializer_list<T> init);
     constexpr void push_back(const T& value);
@@ -15,9 +19,12 @@ public:
     constexpr T& operator[](std::size_t index);
     constexpr const T& operator[](std::size_t index) const;
     constexpr bool empty() const;
-    constexpr void erase(std::size_t index);
-    constexpr auto begin() const;
-    constexpr auto end() const;
+    constexpr iterator erase(iterator index) noexcept;
+    constexpr iterator insert(iterator index, T val) noexcept;
+    constexpr iterator begin() noexcept;
+    constexpr const_iterator begin() const noexcept;
+    constexpr iterator end() noexcept;
+    constexpr const_iterator end() const noexcept;
     constexpr void clear();
 
 private:
@@ -69,20 +76,37 @@ constexpr bool static_vector<T, Capacity>::empty() const {
 }
 
 template <typename T, std::size_t Capacity>
-constexpr void static_vector<T, Capacity>::erase(std::size_t index) {
-    if (index < size_) {
-        std::move(data_.begin() + index + 1, data_.begin() + size_, data_.begin() + index);
-        --size_;
-    }
+constexpr typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::erase(iterator index) noexcept {
+    std::copy(index + 1, data_.begin() + size_, index);
+    --size_;
+    return data_.begin() + size_;
 }
 
 template <typename T, std::size_t Capacity>
-constexpr auto static_vector<T, Capacity>::begin() const {
+constexpr typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::insert(iterator index, T val) noexcept {
+    std::copy_backward(index, data_.begin() + size_, data_.begin() + size_ + 1);
+    *index = val;
+    ++size_;
+    return index;
+}
+
+template <typename T, std::size_t Capacity>
+constexpr typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::begin() noexcept {
     return data_.begin();
 }
 
 template <typename T, std::size_t Capacity>
-constexpr auto static_vector<T, Capacity>::end() const {
+constexpr typename static_vector<T, Capacity>::const_iterator static_vector<T, Capacity>::begin() const noexcept {
+    return data_.begin();
+}
+
+template <typename T, std::size_t Capacity>
+constexpr typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::end() noexcept {
+    return data_.begin() + size_;
+}
+
+template <typename T, std::size_t Capacity>
+constexpr typename static_vector<T, Capacity>::const_iterator static_vector<T, Capacity>::end() const noexcept {
     return data_.begin() + size_;
 }
 
