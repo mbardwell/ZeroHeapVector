@@ -1,8 +1,8 @@
 CXX = g++
 CXXSTANDARD = c++23
 CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -fstack-usage -Wstack-usage=2048
-ifdef SIZE
-CXXFLAGS += -DSIZE=$(SIZE)
+ifdef CAPACITY
+CXXFLAGS += -DCAPACITY=$(CAPACITY)
 endif
 
 LIBRARY = libstack_vector.a

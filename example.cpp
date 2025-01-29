@@ -5,16 +5,18 @@
 #include <cstdlib>
 #include <vector>
 
-#ifdef SIZE
-constexpr std::size_t N = SIZE;
+constexpr std::size_t DefaultCapacity = 128;
+
+#ifdef CAPACITY
+constexpr std::size_t Capacity = CAPACITY;
 #else
-constexpr std::size_t N = 128;
+constexpr std::size_t Capacity = DefaultCapacity;
 #endif
 
 // Alias for stack_vector with a fixed size.
 // This will be more familiar to C++ developers.
 template <typename T>
-using vector = stack_vector<T, N>;
+using vector = stack_vector<T, Capacity>;
 
 void test_stack_vector() {
     vector<std::uint8_t> vec;
