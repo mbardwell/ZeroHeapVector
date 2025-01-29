@@ -1,6 +1,6 @@
 CXX = g++
 CXXSTANDARD = c++23
-CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -fstack-usage -Wstack-usage=2048
+CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -fstack-usage -Wstack-usage=2048 -O2
 ifdef CAPACITY
 CXXFLAGS += -DCAPACITY=$(CAPACITY)
 endif
