@@ -5,7 +5,6 @@ ifdef CAPACITY
 CXXFLAGS += -DCAPACITY=$(CAPACITY)
 endif
 
-LIBRARY = libstack_vector.a
 SOURCES =
 OBJECTS = $(SOURCES:.cpp=.o)
 
@@ -17,13 +16,9 @@ endif
 EXAMPLE_SOURCES = example.cpp
 EXAMPLE_OBJECTS = $(EXAMPLE_SOURCES:.cpp=.o)
 
-all: $(LIBRARY) $(EXAMPLE)
+all: $(EXAMPLE)
 
-$(LIBRARY): $(OBJECTS)
-	@echo "\033[0;32mBuilding Library\033[0m"
-	ar rcs $@ $^
-
-$(EXAMPLE): $(EXAMPLE_OBJECTS) $(LIBRARY)
+$(EXAMPLE): $(EXAMPLE_OBJECTS)
 	@echo "\033[0;32mCompiling\033[0m"
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
@@ -41,4 +36,4 @@ static: $(EXAMPLE)
 
 clean:
 	@echo "\033[0;32mCleaning\033[0m"
-	rm -f $(OBJECTS) $(EXAMPLE_OBJECTS) $(LIBRARY) $(EXAMPLE) $(EXAMPLE:.exe=.su)
+	rm -f $(OBJECTS) $(EXAMPLE_OBJECTS) $(EXAMPLE) $(EXAMPLE:.exe=.su)
