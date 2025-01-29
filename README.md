@@ -1,9 +1,13 @@
 # ZeroHeapVector
 
-Zero heap vector C++ implementation.
+Simple zero heap vector C++ implementation, focused on embedded systems.
 
-To run the example: install g++, compile with `make` and run the executable `./example{.exe}`.
+If you are looking for a generic implementation, here are some resources:
 
-Optionally install valgrind, clang-tidy and cppcheck for static analysis and statistics.
+* Boost's static_vector
+* Static vector open standard request [P0843r6](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p0843r6.html)
+* Watch [David Stone's CppCon talk](https://www.youtube.com/watch?v=I8QJLGI0GOE) and refer to the
 
-Tested on Windows 11 MINGW64 and Ubuntu 24.
+To run the example: install g++, compile with `make` and run the executable `./example{.exe}`. Optionally install valgrind, clang-tidy and cppcheck for static analysis and statistics.
+
+## Key Results
