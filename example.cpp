@@ -19,7 +19,6 @@ constexpr std::size_t Capacity = DefaultCapacity;
 template <typename T>
 using vector = stack_vector<T, Capacity>;
 
-// Demonstrate similarities between stack_vector and std::vector
 void test_communication_protocol() {
     const std::initializer_list<std::uint8_t> slip_msg = {0xc0,0x0D,0x0E,0x0A,0x0D,0x0B,0x0E,0x0E,0x0F,'\0', 0x00};
     std::vector<std::uint8_t> heap_vec = slip_msg;
@@ -32,17 +31,17 @@ void test_communication_protocol() {
     };
 
     print_vector_info("--Initial state");
-    // Unframe SLIP message by removing 0xC0 bytes
+
     heap_vec.pop_back();
     heap_vec.erase(heap_vec.begin());
     stack_vec.pop_back();
     stack_vec.erase(0);  // Intentional API change to allow simpler implementation
     print_vector_info("--After unframing");
-    // Modify message by removing trailing null byte
+
     heap_vec.pop_back();
     stack_vec.pop_back();
     print_vector_info("--After modifyng message by removing null byte");
-    // Do something with the vectors
+
     for (auto byte : heap_vec) {
         printf("0x%02X ", byte);
     }
@@ -52,7 +51,7 @@ void test_communication_protocol() {
     }
     printf("\n");
     print_vector_info("--After performing operation");
-    // Clear vectors
+
     heap_vec.clear();
     stack_vec.clear();
     print_vector_info("--After clearing");
