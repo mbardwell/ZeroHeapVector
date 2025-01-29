@@ -1,4 +1,4 @@
-#include "stack_vector.hpp"
+#include "static_vector.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -17,7 +17,7 @@ constexpr std::size_t Capacity = DefaultCapacity;
 // Alias for stack_vector with a fixed size.
 // This will be more familiar to C++ developers.
 template <typename T>
-using vector = stack_vector<T, Capacity>;
+using vector = static_vector<T, Capacity>;
 
 void test_communication_protocol() {
     const std::initializer_list<std::uint8_t> slip_msg = {0xc0,0x0D,0x0E,0x0A,0x0D,0x0B,0x0E,0x0E,0x0F,'\0', 0x00};
