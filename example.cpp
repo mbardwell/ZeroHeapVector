@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <vector>
 
 #ifdef SIZE
 constexpr std::size_t N = SIZE;
@@ -15,12 +16,26 @@ constexpr std::size_t N = 128;
 template <typename T>
 using vector = stack_vector<T, N>;
 
-int main() {
+void test_stack_vector() {
     vector<std::uint8_t> vec;
     while (vec.size() < vec.capacity())
         vec.push_back(static_cast<std::uint8_t>(rand() % 256));
-    printf("Static vector used: %zu / %zu capacity", vec.size(), vec.capacity());
+    printf("Static vector used: %zu / %zu capacity\n", vec.size(), vec.capacity());
     while (!vec.empty())
         vec.pop_back();
+}
+
+void test_heap_vector() {
+    std::vector<std::uint8_t> vec;
+    while (vec.size() < vec.capacity())
+        vec.push_back(static_cast<std::uint8_t>(rand() % 256));
+    printf("Heap vector used: %zu / %zu capacity\n", vec.size(), vec.capacity());
+    while (!vec.empty())
+        vec.pop_back();
+}
+
+int main() {
+    test_stack_vector();
+    test_heap_vector();
     return 0;
 }
