@@ -29,9 +29,9 @@ $(EXAMPLE): $(EXAMPLE_OBJECTS) $(LIBRARY)
 
 stats: $(EXAMPLE)
 	@echo "\033[0;32mStats\033[0m"
-	@size $(EXAMPLE)
+	@echo "Text, initialized data & uninitialized data segments" && size $(EXAMPLE)
 	@# Output the stack usage. Requires -fstack-usage to be enabled.
-	@echo -n "Stack usage: " && grep "main" $(EXAMPLE:.exe=.su)
+	@echo "Stack usage: " && grep "test" $(EXAMPLE:.exe=.su)
 
 static: $(EXAMPLE)
 	@echo "\033[0;32mStatic Analysis\033[0m"
