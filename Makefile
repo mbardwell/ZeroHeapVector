@@ -24,7 +24,7 @@ $(EXAMPLE): $(EXAMPLE_OBJECTS)
 
 stats: $(EXAMPLE)
 	@echo "\033[0;32mStats\033[0m"
-	@echo "Text, initialized data & uninitialized data segments" && size $(EXAMPLE)
+	@echo "Text, initialized data & uninitialized data segments" && size $(EXAMPLE_OBJECTS)
 	@# Output the stack usage. Requires -fstack-usage to be enabled.
 	@echo "Stack usage: " && grep "test" $(EXAMPLE:.exe=.su)
 
