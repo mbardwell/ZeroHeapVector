@@ -14,15 +14,10 @@ constexpr std::size_t Capacity = CAPACITY;
 constexpr std::size_t Capacity = DefaultCapacity;
 #endif
 
-// Alias for stack_vector with a fixed size.
-// This will be more familiar to C++ developers.
-template <typename T>
-using vector = static_vector<T, Capacity>;
-
 void test_communication_protocol() {
     const std::initializer_list<std::uint8_t> slip_msg = {0xc0,0x0D,0x0E,0x0A,0x0D,0x0B,0x0E,0x0E,0x0F,'\0', 0xc0};
     std::vector<std::uint8_t> heap_vec = slip_msg;
-    vector<std::uint8_t> stack_vec = slip_msg;
+    static_vector<std::uint8_t, Capacity> stack_vec = slip_msg;
 
     auto print_message = []<typename Vec>(Vec& vec) {
         for (const auto& byte : vec) {
