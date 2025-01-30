@@ -39,7 +39,7 @@ stats: $(EXAMPLE)
 	@echo "\033[0;32mStats\033[0m"
 	@echo "Text, initialized data & uninitialized data segments" && size $(EXAMPLE_OBJECTS)
 	@# Output the stack usage. Requires -fstack-usage to be enabled.
-	@echo "Stack usage: " && grep "test" $(EXAMPLE_SOURCES:.cpp=.su)
+	@echo "Stack usage (requires BUILD=debug): " && grep "test" $(EXAMPLE_SOURCES:.cpp=.su)
 
 static: $(EXAMPLE)
 	@echo "\033[0;32mStatic Analysis\033[0m"
