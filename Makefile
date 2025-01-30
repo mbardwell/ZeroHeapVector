@@ -1,5 +1,5 @@
 CXX = g++
-CXXSTANDARD = c++23
+CXXSTANDARD = c++20
 CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -O2
 BUILD ?= release
 
