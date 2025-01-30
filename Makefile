@@ -1,6 +1,7 @@
 CXX = g++
 CXXSTANDARD = c++23
-CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -O2 -fstack-usage
+CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -O2
+CXXFLAGS += -fstack-usage -fsanitize=address  # This should be DEBUG-only in your code
 ifdef STACK_SIZE
 CXXFLAGS += -Wstack-usage=$(STACK_SIZE)
 endif
@@ -22,11 +23,11 @@ EXAMPLE_OBJECTS = $(EXAMPLE_SOURCES:.cpp=.o)
 all: $(EXAMPLE)
 
 %.o: %.cpp
-	@echo "\033[0;32mCompiling object file\033[0m"
+	@echo "\033[0;32mCompiling into object(s)\033[0m"
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(EXAMPLE): $(EXAMPLE_OBJECTS)
-	@echo "\033[0;32mCompiling executable\033[0m"
+	@echo "\033[0;32mCompiling into executable(s)\033[0m"
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 stats: $(EXAMPLE)
