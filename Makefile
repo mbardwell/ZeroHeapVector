@@ -1,7 +1,12 @@
 CXX = g++
 CXXSTANDARD = c++23
 CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -O2
-CXXFLAGS += -fstack-usage -fsanitize=address  # This should be DEBUG-only in your code
+BUILD ?= release
+
+ifeq ($(BUILD),debug)
+	CXXFLAGS += -fstack-usage -fsanitize=address
+endif
+
 ifdef STACK_SIZE
 CXXFLAGS += -Wstack-usage=$(STACK_SIZE)
 endif
