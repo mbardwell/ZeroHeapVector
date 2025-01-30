@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cstddef>
 
 template <typename T, std::size_t Capacity>
@@ -42,12 +43,14 @@ constexpr static_vector<T, Capacity>::static_vector(std::initializer_list<T> ini
 
 template <typename T, std::size_t Capacity>
 constexpr void static_vector<T, Capacity>::push_back(const T& value) {
+    assert(size_ < Capacity);
     data_[size_++] = value;
 }
 
 template <typename T, std::size_t Capacity>
 constexpr void static_vector<T, Capacity>::pop_back() {
-    --size_;
+    if (!empty())
+        --size_;
 }
 
 template <typename T, std::size_t Capacity>
