@@ -1,6 +1,9 @@
 CXX = g++
 CXXSTANDARD = c++23
-CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -fstack-usage -Wstack-usage=2048 -O2
+CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -O2
+ifdef STACK_SIZE
+CXXFLAGS += -fstack-usage -Wstack-usage=$(STACK_SIZE)
+endif
 ifdef CAPACITY
 CXXFLAGS += -DCAPACITY=$(CAPACITY)
 endif
@@ -18,8 +21,12 @@ EXAMPLE_OBJECTS = $(EXAMPLE_SOURCES:.cpp=.o)
 
 all: $(EXAMPLE)
 
+%.o: %.cpp
+	@echo "\033[0;32mCompiling object file\033[0m"
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
 $(EXAMPLE): $(EXAMPLE_OBJECTS)
-	@echo "\033[0;32mCompiling\033[0m"
+	@echo "\033[0;32mCompiling executable\033[0m"
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 stats: $(EXAMPLE)
