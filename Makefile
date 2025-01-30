@@ -1,8 +1,8 @@
 CXX = g++
 CXXSTANDARD = c++23
-CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -O2
+CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -O2 -fstack-usage
 ifdef STACK_SIZE
-CXXFLAGS += -fstack-usage -Wstack-usage=$(STACK_SIZE)
+CXXFLAGS += -Wstack-usage=$(STACK_SIZE)
 endif
 ifdef CAPACITY
 CXXFLAGS += -DCAPACITY=$(CAPACITY)
@@ -33,7 +33,7 @@ stats: $(EXAMPLE)
 	@echo "\033[0;32mStats\033[0m"
 	@echo "Text, initialized data & uninitialized data segments" && size $(EXAMPLE_OBJECTS)
 	@# Output the stack usage. Requires -fstack-usage to be enabled.
-	@echo "Stack usage: " && grep "test" $(EXAMPLE:.exe=.su)
+	@echo "Stack usage: " && grep "test" $(EXAMPLE_SOURCES:.cpp=.su)
 
 static: $(EXAMPLE)
 	@echo "\033[0;32mStatic Analysis\033[0m"
@@ -43,4 +43,4 @@ static: $(EXAMPLE)
 
 clean:
 	@echo "\033[0;32mCleaning\033[0m"
-	rm -f $(OBJECTS) $(EXAMPLE_OBJECTS) $(EXAMPLE) $(EXAMPLE:.exe=.su)
+	rm -f $(OBJECTS) $(EXAMPLE_OBJECTS) $(EXAMPLE) $(EXAMPLE_SOURCES:.cpp=.su)
