@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cstddef>
@@ -12,7 +11,7 @@ public:
     using const_iterator = typename std::array<T, Capacity>::const_iterator;
 
     constexpr static_vector();
-    constexpr static_vector(std::initializer_list<T> init);
+    constexpr static_vector(const std::initializer_list<T> init);
     constexpr void push_back(const T& value);
     constexpr void pop_back();
     constexpr auto size() const;
@@ -30,14 +29,15 @@ public:
 
 private:
     std::array<T, Capacity> data_;
-    std::size_t size_;
+    std::size_t size_;  // Number of active elements
 };
 
 template <typename T, std::size_t Capacity>
 constexpr static_vector<T, Capacity>::static_vector() : data_(std::array<T, Capacity>()), size_(0) {}
 
 template <typename T, std::size_t Capacity>
-constexpr static_vector<T, Capacity>::static_vector(std::initializer_list<T> init) : data_(), size_(init.size()) {
+constexpr static_vector<T, Capacity>::static_vector(const std::initializer_list<T> init) : data_(), size_(init.size()) {
+    assert(init.size() <= Capacity);
     std::copy(init.begin(), init.end(), data_.begin());
 }
 
@@ -65,6 +65,7 @@ constexpr auto static_vector<T, Capacity>::capacity() {
 
 template <typename T, std::size_t Capacity>
 constexpr T& static_vector<T, Capacity>::operator[](std::size_t index) {
+    size_ = size_ <= index ? index + 1 : size_;
     return data_[index];
 }
 
