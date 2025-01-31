@@ -22,7 +22,7 @@ template <std::size_t Capacity>
 using vector = static_vector<std::uint8_t, Capacity>;
 
 template <std::size_t Capacity>
-constexpr void encapsulate(static_vector<std::uint8_t, Capacity> &buf) {
+void encapsulate(static_vector<std::uint8_t, Capacity> &buf) {
     const auto temp_buf = buf;
     std::size_t j = 0;
     buf[j++] = END;
@@ -42,7 +42,7 @@ constexpr void encapsulate(static_vector<std::uint8_t, Capacity> &buf) {
 }
 
 template <std::size_t Capacity>
-constexpr bool deencapsulate(static_vector<std::uint8_t, Capacity> &buf) {
+bool deencapsulate(static_vector<std::uint8_t, Capacity> &buf) {
     auto temp_buf = buf;
     buf.clear();
     std::int32_t os = 0;  // output size
