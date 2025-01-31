@@ -1,10 +1,12 @@
 CXX = g++
 CXXSTANDARD = c++14
-CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -O2
+CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -fstack-usage
 BUILD ?= release
 
 ifeq ($(BUILD),debug)
-	CXXFLAGS += -fstack-usage -fsanitize=address
+	CXXFLAGS += -ggdb
+else
+	CXXFLAGS += -DNDEBUG -O2
 endif
 
 ifdef STACK_SIZE
