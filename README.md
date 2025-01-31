@@ -14,7 +14,7 @@ If you are looking for a generic implementation, here are some resources:
 
 To run the example: install `g++ make`, compile with `make` and run the executable `./example{.exe}`. Optionally install `valgrind clang-tidy cppcheck` for static analysis and statistics.
 
-This is written for C++20 for templated lambdas, but can fairly easily be modified for C++11. See the C++11 branch for details.
+This is written for C++14, but can fairly easily be modified for C++11. See the C++11 branch for details.
 
 Terminology: `static_vector` == `stack_vector` == `zero heap vector`
 
