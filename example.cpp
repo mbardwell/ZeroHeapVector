@@ -43,22 +43,22 @@ void print_bytes(Seq& s, const char* pre = "") {
  */
 template <typename Vec>
 void show_api(Vec vec) {
-    auto print_heap_and_stack_info = [&](const char* pre) {
-        print_bytes(vec, pre); // or stack vec. They are the same
+    auto print_vector_info = [&](const char* pre) {
+        print_bytes(vec, pre);
         printf("Vector size: %zu, capacity: %zu\n", vec.size(), vec.capacity());
     };
 
-    print_heap_and_stack_info("--Initial state");
+    print_vector_info("--Initial state");
     vec.pop_back();
     vec.erase(vec.begin());
-    print_heap_and_stack_info("--After unframing");
+    print_vector_info("--After unframing");
     vec.pop_back();
-    print_heap_and_stack_info("--After performing some operation on the vector (pop_back)");
+    print_vector_info("--After performing some operation on the vector (pop_back)");
     vec.push_back(0xc0);
     vec.insert(vec.begin(), 0xc0);
-    print_heap_and_stack_info("--After reframing");
+    print_vector_info("--After reframing");
     vec.clear();
-    print_heap_and_stack_info("--After clearing");
+    print_vector_info("--After clearing");
 }
 
 /**
