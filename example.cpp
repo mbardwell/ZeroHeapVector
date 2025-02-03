@@ -8,6 +8,7 @@ using ::GetCapacity;
 }
 
 #include "slip.hpp"
+#include "static_allocator.hpp"
 #include "static_vector.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -98,11 +99,14 @@ void slip_c() {
 int main() {
     static constexpr std::initializer_list<std::uint8_t> slip_msg = {0xC0,0x0D,0x0E,0x0A,0x0D,0x0B,0x0E,0x0E,0x0F,'\0', 0xC0};
     std::vector<std::uint8_t> heap_vec = slip_msg;
-    static_vector<std::uint8_t, MAX_SLIP_MSG_SIZE> stack_vec = slip_msg;
+    static_vector<std::uint8_t, MAX_SLIP_MSG_SIZE> custom_svec = slip_msg;
+    std::vector<std::uint8_t, static_allocator<std::uint8_t, MAX_SLIP_MSG_SIZE>> std_svec = slip_msg;
     printf("# Heap vector\n");
     show_api(heap_vec);
-    printf("# Stack vector\n");
-    show_api(stack_vec);
+    printf("# Custom static vector\n");
+    show_api(custom_svec);
+    printf("# Std vector with static allocator\n");
+    show_api(std_svec);
     slip_cpp();
     slip_c();
     return 0;
