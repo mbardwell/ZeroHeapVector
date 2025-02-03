@@ -58,4 +58,4 @@ static: $(EXAMPLE)
 
 clean:
 	@echo "\033[0;32mCleaning\033[0m"
-	rm -f $(CXX_OBJECTS) $(C_OBJECTS) $(EXAMPLE) $(EXAMPLE_SOURCES:.cpp=.su)
+	rm -f *.o *.su $(EXAMPLE)
