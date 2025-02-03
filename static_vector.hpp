@@ -19,12 +19,12 @@ public:
     T& operator[](std::size_t index);
     const T& operator[](std::size_t index) const;
     bool empty() const;
-    iterator erase(iterator index) noexcept;
-    iterator insert(iterator index, T val) noexcept;
-    iterator begin() noexcept;
-    const_iterator begin() const noexcept;
-    iterator end() noexcept;
-    const_iterator end() const noexcept;
+    iterator erase(iterator index);
+    iterator insert(iterator index, T val);
+    iterator begin();
+    const_iterator begin() const;
+    iterator end();
+    const_iterator end() const;
     void clear();
 
 private:
@@ -80,14 +80,14 @@ bool static_vector<T, Capacity>::empty() const {
 }
 
 template <typename T, std::size_t Capacity>
-typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::erase(iterator index) noexcept {
+typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::erase(iterator index) {
     std::copy(index + 1, data_.begin() + size_, index);
     --size_;
     return data_.begin() + size_;
 }
 
 template <typename T, std::size_t Capacity>
-typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::insert(iterator index, T val) noexcept {
+typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::insert(iterator index, T val) {
     std::copy_backward(index, data_.begin() + size_, data_.begin() + size_ + 1);
     *index = val;
     ++size_;
@@ -95,22 +95,22 @@ typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::insert
 }
 
 template <typename T, std::size_t Capacity>
-typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::begin() noexcept {
+typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::begin() {
     return data_.begin();
 }
 
 template <typename T, std::size_t Capacity>
-typename static_vector<T, Capacity>::const_iterator static_vector<T, Capacity>::begin() const noexcept {
+typename static_vector<T, Capacity>::const_iterator static_vector<T, Capacity>::begin() const {
     return data_.begin();
 }
 
 template <typename T, std::size_t Capacity>
-typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::end() noexcept {
+typename static_vector<T, Capacity>::iterator static_vector<T, Capacity>::end() {
     return data_.begin() + size_;
 }
 
 template <typename T, std::size_t Capacity>
-typename static_vector<T, Capacity>::const_iterator static_vector<T, Capacity>::end() const noexcept {
+typename static_vector<T, Capacity>::const_iterator static_vector<T, Capacity>::end() const {
     return data_.begin() + size_;
 }
 
