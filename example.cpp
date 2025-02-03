@@ -69,7 +69,7 @@ void slip_cpp() {
     print_bytes(slip_msg, "--Initial state");
     slip::Encapsulate(slip_msg);
     print_bytes(slip_msg, "--After encapsulation");
-    slip::Deencapsulate(slip_msg);
+    static_cast<void>(slip::Deencapsulate(slip_msg));
     print_bytes(slip_msg, "--After deencapsulation");
 }
 
@@ -91,7 +91,7 @@ void slip_c() {
     printf("C SLIP\n");
     c_slip::Encapsulate(c_slip_msg, &c_slip_msg_size);
     c_print_bytes(c_slip_msg, c_slip_msg_size, "--After encapsulation");
-    c_slip::Deencapsulate(c_slip_msg, &c_slip_msg_size);
+    (void)c_slip::Deencapsulate(c_slip_msg, &c_slip_msg_size);
     c_print_bytes(c_slip_msg, c_slip_msg_size, "--After deencapsulation");
 }
 

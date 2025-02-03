@@ -37,7 +37,7 @@ all: $(EXAMPLE)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o: %.cpp
-	@echo "\033[0;32mCompiling C files into object(s)\033[0m"
+	@echo "\033[0;32mCompiling C++ files into object(s)\033[0m"
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(EXAMPLE): $(EXAMPLE_OBJECTS) $(CXX_OBJECTS) $(C_OBJECTS)
