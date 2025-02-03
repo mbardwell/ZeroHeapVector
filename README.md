@@ -1,5 +1,7 @@
 # ZeroHeapVector
 
+_This was written for a talk. It is not production quality_.
+
 Simple zero heap vector C++ implementation, focused on embedded systems. The advantages over `std::vector` are:
 
 * Memory is allocated on the stack, which is generally faster than heap allocation.

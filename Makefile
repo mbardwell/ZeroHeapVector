@@ -1,6 +1,6 @@
 CXX = g++
 CXXSTANDARD = c++14
-CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=$(CXXSTANDARD) -fstack-usage
+CXXFLAGS = -Wall -Wextra -Werror -std=$(CXXSTANDARD) -fstack-usage
 BUILD ?= release
 
 ifeq ($(BUILD),debug)
@@ -16,8 +16,11 @@ ifdef CAPACITY
 CXXFLAGS += -DCAPACITY=$(CAPACITY)
 endif
 
-SOURCES =
-OBJECTS = $(SOURCES:.cpp=.o)
+CXX_SOURCES =
+CXX_OBJECTS = $(CXX_SOURCES:.cpp=.o)
+
+C_SOURCES = slip.c
+C_OBJECTS = $(C_SOURCES:.c=.o)
 
 ifeq ($(OS),Windows_NT)
 	EXAMPLE = example.exe
@@ -29,11 +32,15 @@ EXAMPLE_OBJECTS = $(EXAMPLE_SOURCES:.cpp=.o)
 
 all: $(EXAMPLE)
 
-%.o: %.cpp
-	@echo "\033[0;32mCompiling into object(s)\033[0m"
+%.o: %.c
+	@echo "\033[0;32mCompiling C files into object(s)\033[0m"
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(EXAMPLE): $(EXAMPLE_OBJECTS)
+%.o: %.cpp
+	@echo "\033[0;32mCompiling C files into object(s)\033[0m"
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(EXAMPLE): $(EXAMPLE_OBJECTS) $(CXX_OBJECTS) $(C_OBJECTS)
 	@echo "\033[0;32mCompiling into executable(s)\033[0m"
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
@@ -51,4 +58,4 @@ static: $(EXAMPLE)
 
 clean:
 	@echo "\033[0;32mCleaning\033[0m"
-	rm -f $(OBJECTS) $(EXAMPLE_OBJECTS) $(EXAMPLE) $(EXAMPLE_SOURCES:.cpp=.su)
+	rm -f $(CXX_OBJECTS) $(C_OBJECTS) $(EXAMPLE) $(EXAMPLE_SOURCES:.cpp=.su)

@@ -1,5 +1,12 @@
 // All sizes in bytes
 
+#include "slip.h"
+namespace c_slip {
+using ::Encapsulate;
+using ::Deencapsulate;
+using ::GetCapacity;
+}
+
 #include "slip.hpp"
 #include "static_vector.hpp"
 #include <cstddef>
@@ -27,6 +34,12 @@ void print_bytes(Seq& s, const char* pre = "") {
     printf("\n");
 }
 
+/**
+ * @brief Demonstrate API similarity between std::vector and static_vector
+ * @note This shows an extremely dumbed down version of SLIP
+ * @tparam Vec Vector type
+ * @param vec Vector
+ */
 template <typename Vec>
 void show_api(Vec vec) {
     auto print_heap_and_stack_info = [&](const char* pre) {
@@ -39,7 +52,7 @@ void show_api(Vec vec) {
     vec.erase(vec.begin());
     print_heap_and_stack_info("--After unframing");
     vec.pop_back();
-    print_heap_and_stack_info("--After removing delimiter");
+    print_heap_and_stack_info("--After performing some operation on the vector (pop_back)");
     vec.push_back(0xc0);
     vec.insert(vec.begin(), 0xc0);
     print_heap_and_stack_info("--After reframing");
@@ -47,24 +60,50 @@ void show_api(Vec vec) {
     print_heap_and_stack_info("--After clearing");
 }
 
-void show_slip() {
+/**
+ * @brief Demonstrate SLIP in C++ using static_vector
+ */
+void slip_cpp() {
     static constexpr std::initializer_list<std::uint8_t> slip_msg_s = {1,2,3};
     static_vector<std::uint8_t, slip::GetCapacity(slip_msg_s.size())> slip_msg = slip_msg_s;
     print_bytes(slip_msg, "--Initial state");
-    slip::encapsulate(slip_msg);
+    slip::Encapsulate(slip_msg);
     print_bytes(slip_msg, "--After encapsulation");
-    slip::deencapsulate(slip_msg);
+    slip::Deencapsulate(slip_msg);
     print_bytes(slip_msg, "--After deencapsulation");
 }
 
+/**
+ * @brief Demonstrate SLIP in C using a fixed size buffer
+ */
+void slip_c() {
+    auto c_print_bytes = [](const std::uint8_t* bytes, std::size_t size, const char* pre = "") {
+        printf("%s\nBytes: ", pre);
+        for (std::size_t i = 0; i < size; ++i) {
+            printf("0x%02X ", bytes[i]);
+        }
+        printf("\n");
+    };
+
+    std::size_t c_slip_msg_size = 3;
+    // Variable length array violates ISO C++ (ie. cannot use -pedantic)
+    std::uint8_t c_slip_msg[c_slip::GetCapacity(c_slip_msg_size)] = {1,2,3};
+    printf("C SLIP\n");
+    c_slip::Encapsulate(c_slip_msg, &c_slip_msg_size);
+    c_print_bytes(c_slip_msg, c_slip_msg_size, "--After encapsulation");
+    c_slip::Deencapsulate(c_slip_msg, &c_slip_msg_size);
+    c_print_bytes(c_slip_msg, c_slip_msg_size, "--After deencapsulation");
+}
+
 int main() {
-    static constexpr std::initializer_list<std::uint8_t> slip_msg = {0xc0,0x0D,0x0E,0x0A,0x0D,0x0B,0x0E,0x0E,0x0F,'\0', 0xc0};
+    static constexpr std::initializer_list<std::uint8_t> slip_msg = {0xC0,0x0D,0x0E,0x0A,0x0D,0x0B,0x0E,0x0E,0x0F,'\0', 0xC0};
     std::vector<std::uint8_t> heap_vec = slip_msg;
     static_vector<std::uint8_t, MAX_SLIP_MSG_SIZE> stack_vec = slip_msg;
     printf("# Heap vector\n");
     show_api(heap_vec);
     printf("# Stack vector\n");
     show_api(stack_vec);
-    show_slip();
+    slip_cpp();
+    slip_c();
     return 0;
 }
