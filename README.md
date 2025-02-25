@@ -24,7 +24,7 @@ Terminology: `static_vector` == `stack_vector` == `zero heap vector`
 
 Results are organized by commit they were derived from. Reverse chronological order.
 
-### ?  Compile with no heap
+### 79932cd  Compile with no heap
 
 Options:
 
@@ -38,7 +38,7 @@ $ g++ -g -Wl,--wrap=malloc -o example_malloc example_malloc.cpp
 undefined reference to `__wrap_malloc'
 ```
 
-### ?  Overload heap memory
+### 79932cd  Overload heap memory
 
 ```shell
 $ docker run --rm -it --memory 100m -v $(pwd):/mnt ubuntu:24.04 bash  # Limit container memory to 100MB
@@ -59,6 +59,46 @@ $ ./example_malloc 100000100
 $ ./example_malloc 100010000
 $ ./example_malloc 101000000
 Killed
+```
+
+Can also overload memory using emulators like renode ([STM43F4 example](https://medium.com/@pc0is0me/getting-started-with-stm32f4-emulation-using-renode-f6cb158d27d1))
+
+```diff
+$ git diff renode/src/main.c
+diff --git a/renode/src/main.c b/renode/src/main.c
+index d6daa24..c722f46 100644
+--- a/renode/src/main.c
++++ b/renode/src/main.c
+@@ -41,9 +41,20 @@ int main()
+     CAN_Transmit(CAN1, &TxMsg);
+     cnt++;
+   }
+-  char data[] = "Hello World!";
++  char data[] = "Allocating memory";
+   print(data);
+-
++
++  int n_bytes = 1000000;
++  char *l = (char *)(malloc(n_bytes));
++
++  for (int i = 0; i < n_bytes; i++) {
++    l[i] = (char)(i % 256);
++  }
++
++  char data2[] = "Freeing memory";
++  print(data2);
++  free(l);
++
+   for (;;);
+
+   return 0;
+```
+
+```shell
+...
+12:28:43.1090 [WARNING] sysbus: [cpu: 0x800029C] WriteByte to non existing peripheral at 0x20045B9F, value 0xEF.
+12:28:43.1090 [WARNING] sysbus: [cpu: 0x800029C] WriteByte to non existing peripheral at 0x20045BA0, value 0xF0.
+12:28:43.1090 [WARNING] sysbus: [cpu: 0x800029C] WriteByte to non existing peripheral at 0x20045BA1, value 0xF1.
 ```
 
 ### 7b20a5b  Complete comm. protocol example
