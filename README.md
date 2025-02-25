@@ -24,6 +24,43 @@ Terminology: `static_vector` == `stack_vector` == `zero heap vector`
 
 Results are organized by commit they were derived from. Reverse chronological order.
 
+### ?  Compile with no heap
+
+Options:
+
+* Some programs let you set heap to zero
+* Overload `new`/`free` operators
+* Redefine `malloc` ex. `#define malloc(dummy) NULL; _Static_assert(0, "Err: use of dynamic memory")`
+* Redirect linker `g++ -Wl,--wrap=malloc`
+
+```shell
+$ g++ -g -Wl,--wrap=malloc -o example_malloc example_malloc.cpp
+undefined reference to `__wrap_malloc'
+```
+
+### ?  Overload heap memory
+
+```shell
+$ docker run --rm -it --memory 100m -v $(pwd):/mnt ubuntu:24.04 bash  # Limit container memory to 100MB
+$ make example_malloc
+$ ./example_malloc 100000000
+$ ./example_malloc 200000000  # Linux optimistic memory allocation magic? `top` VIRT 200MB, RES 80MB
+$ ./example_malloc 300000000  # `top` VIRT 300MB, RES 100MB -> 💥
+Killed
+```
+
+Prevent page swapping magic
+
+```shell
+$ docker run --rm  -it --memory 100m --memory-swappiness 0 -v $(pwd):/mnt ubuntu:24.04  # Limit container memory to 100MB
+$ make example_malloc
+$ ./example_malloc 100000000
+$ ./example_malloc 100000100
+$ ./example_malloc 100010000
+$ ./example_malloc 101000000
+Killed
+```
+
 ### 7b20a5b  Complete comm. protocol example
 
 ```shell
