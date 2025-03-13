@@ -24,7 +24,7 @@ Terminology: `static_vector` == `stack_vector` == `zero heap vector`
 
 Results are organized by commit they were derived from. Reverse chronological order.
 
-### 79932cd  Compile with no heap
+### a21af68  Compile with no heap
 
 Options:
 
@@ -38,7 +38,7 @@ $ g++ -g -Wl,--wrap=malloc -o example_malloc example_malloc.cpp
 undefined reference to `__wrap_malloc'
 ```
 
-### 79932cd  Overload heap memory
+### a21af68  Overload heap memory
 
 ```shell
 $ docker run --rm -it --memory 100m -v $(pwd):/mnt ubuntu:24.04 bash  # Limit container memory to 100MB
