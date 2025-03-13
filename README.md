@@ -4,11 +4,11 @@ _This was written for a talk. It is not production quality_.
 
 Simple zero heap vector C++ implementation, focused on embedded systems. The advantages over `std::vector` are:
 
-* Memory is allocated on the stack, which is generally faster than heap allocation.
-* Predictable Performance: Since the size is fixed, there is no need for dynamic memory allocation, leading to more predictable performance.
-* No Heap Fragmentation: As it does not use heap memory, it avoids issues related to heap fragmentation.
+* Memory is allocated on the stack, which is generally faster than heap allocation
+* Predictable Performance: Since the size is fixed, there is no need for dynamic memory allocation, leading to more predictable performance
+* No Heap Fragmentation: As it does not use heap memory, it avoids issues related to heap fragmentation
 
-If you are looking for a generic implementation, here are some resources:
+If you are looking for a generic implementation, here are some great resources:
 
 * Boost's static_vector
 * Static vector open standard request [P0843r6](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p0843r6.html)
@@ -23,6 +23,56 @@ Terminology: `static_vector` == `stack_vector` == `zero heap vector`
 ## Key Results
 
 Results are organized by commit they were derived from. Reverse chronological order.
+
+### [b9af8fd](https://github.com/renode/renode/releases/tag/v1.15.1)  Out of bounds heap allocation on a microcontroller, bare metal
+
+Show how easy it is to ask for more memory than is available when not checking at compile time.
+
+This example is run using  with the following diff
+
+```diff
+diff --git a/renode/src/main.c b/renode/src/main.c
+-  char data[] = "Hello World!";
++  print("Allocating memory");
++
++  int n_bytes = (256 * 1024) + 1;  // Whoops
++  char *l = (char *)(malloc(n_bytes));
++
++  if (l == NULL) {
++    fprintf(stderr, "Memory allocation failed\n");
++    return 1;
++}
++
++  char data[100];
++  (void)sprintf(data, "Address of l: %p, n_bytes: %d", (void*)l, n_bytes);
+   print(data);
+-
++  for (int i = 0; i < n_bytes; i++) {
++    l[i] = (char)(i % 256);
++  }
++  int random_index = rand() % n_bytes;
++  char random_char = l[random_index];
++  (void)sprintf(data, "Random char at index %p: %c", l + random_index, random_char);
++  print(data);
++
++  print("Freeing memory");
++  free(l);
+```
+
+We asked for +1 more than available SRAM. It runs fine
+
+```shell
+Allocating memory
+Address of l: 0x200000b0, n_bytes: 262145
+Random char at index 0x200000b0:
+Freeing memory
+```
+
+Renode is courteous enough to warn us, but you would not know if you were running on a real target
+
+```shell
+16:43:30.0907 [WARNING] sysbus: [cpu: 0x8000290] WriteByte to non existing peripheral at 0x20040000, value 0x50.
+```
 
 ### a21af68  Compile with no heap
 
@@ -94,12 +144,7 @@ index d6daa24..c722f46 100644
    return 0;
 ```
 
-```shell
-...
-12:28:43.1090 [WARNING] sysbus: [cpu: 0x800029C] WriteByte to non existing peripheral at 0x20045B9F, value 0xEF.
-12:28:43.1090 [WARNING] sysbus: [cpu: 0x800029C] WriteByte to non existing peripheral at 0x20045BA0, value 0xF0.
-12:28:43.1090 [WARNING] sysbus: [cpu: 0x800029C] WriteByte to non existing peripheral at 0x20045BA1, value 0xF1.
-```
+
 
 ### 7b20a5b  Complete comm. protocol example
 
@@ -128,7 +173,7 @@ Stack vector size: 0, capacity: 128
 
 ### c3b222c  Demonstrate simliarity between static_vector and std::vector APIs
 
-`stack_vector` behaves as expected
+`stack_vector` and std::vector APIs equivalency
 
 ```shell
 CAPACITY=1024 make stats
